@@ -1,0 +1,21 @@
+body {
+  background-image: linear-gradient(to bottom right, #099441, #9fda40);
+  background-repeat: no-repeat;
+  margin: auto;
+  height: 100vh;
+  margin-top: 100px;
+}
+h1 {
+  font-family: "Kranky", serif;
+  font-weight: bold;
+  font-style: normal;
+}
+h3 {
+  font-family: "Original Surfer", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.container {
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 25px;
+}
