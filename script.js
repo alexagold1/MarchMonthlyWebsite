@@ -16,8 +16,8 @@ const wordList = [
 // setting game variables
 
 let selectedWord = "";
-let displayWord = "";
-let wrongGuess = 0;
+let displayedWord = "";
+let wrongGuesses = 0;
 let guessedLetters = [];
 const maxMistakes = 6;
 
@@ -28,11 +28,11 @@ function startGame(level) {
   updateDifficultyDisplay(level);
 
   //   create the placeholder for the selected word
-  displayWord = "_".repeat(selectedWord.length);
+  displayedWord = "_".repeat(selectedWord.length);
   //display the updated word
-  document.getElementById("wordDisplay").textContent = displayWord
+  document.getElementById("wordDisplay").textContent = displayedWord
     .split("")
-    .join(" ");
+    .join("");
 
   // hide difficulty selection and show game name area
 
@@ -101,4 +101,55 @@ function guessLetter() {
 
   inputField.value = "";
   inputField.focus();
+}
+
+function wrongGuess(guessedLetter) {
+  // incrament the num of wrong guess
+  wrongGuesses++;
+
+  // add the guessed letter to the HTML div
+  document.getElementById("wrongLetters").textContent += `${guessedLetter}`;
+
+  document.getElementById("shamrock").src = `imgs/shamrock${
+    6 - wrongGuesses
+  }.jpg`;
+
+  // check to see if the num of wrongGuesses === the maxMistakes if it is, call endGame(false)
+  if (wrongGuesses === maxMistakes) {
+    endGame(false);
+  }
+}
+
+function correctGuess(guessedLetter) {
+  let newDisplayedWord = "";
+
+  for (let i = 0; i < selectedWord.length; i++) {
+    if (selectedWord[i] === guessedLetter) {
+      newDisplayedWord += guessedLetter;
+    } else {
+      newDisplayedWord += displayedWord[i];
+    }
+  }
+
+  displayedWord = newDisplayedWord;
+  document.getElementById("wordDisplay").textContent = displayedWord
+    .split("")
+    .join("");
+
+  if (!displayedWord.includes("_")) {
+    endGame(true);
+  }
+}
+
+function correctGuess(guessedLetter) {}
+function endGame(won) {
+  if (won === true) {
+    setTimeout(() => alert("yay!! you won!"), 100);
+  } else (won === false){
+    setTimeout(() => alert("aw you lose. try again!"), 100);
+  }
+}
+
+function restartGame() {
+  location.reload();
 }
