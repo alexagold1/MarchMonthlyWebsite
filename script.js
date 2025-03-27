@@ -19,16 +19,20 @@ let selectedWord = "";
 let displayedWord = "";
 let wrongGuesses = 0;
 let guessedLetters = [];
+let slots;
 const maxMistakes = 6;
 
 function startGame(level) {
   selectedWord = getRandomWord(level);
-
+  slots = new Array(selectedWord.length);
+  for (let i = 0; i < slots.length; i++) {
+    slots[i] = "_";
+  }
   // update difficulty display div
   updateDifficultyDisplay(level);
 
   //   create the placeholder for the selected word
-  displayedWord = "_".repeat(selectedWord.length);
+  displayedWord = " _ ".repeat(selectedWord.length);
   //display the updated word
   document.getElementById("wordDisplay").textContent = displayedWord
     .split("")
@@ -93,7 +97,7 @@ function guessLetter() {
     guessedLetters.push(guessedLetter);
   }
 
-  if (selectedWord.includes(guessedLetters)) {
+  if (selectedWord.includes(guessedLetter)) {
     correctGuess(guessedLetter);
   } else {
     wrongGuess(guessedLetter);
@@ -123,29 +127,28 @@ function wrongGuess(guessedLetter) {
 function correctGuess(guessedLetter) {
   let newDisplayedWord = "";
 
+  // for (let i = 0; i < selectedWord.length; i++) {
+  //   if (selectedWord[i] === guessedLetter) {
+  //     newDisplayedWord += guessedLetter;
+  //   } else {
+  //     newDisplayedWord += displayedWord[i];
+  //   }
+  // }
   for (let i = 0; i < selectedWord.length; i++) {
-    if (selectedWord[i] === guessedLetter) {
-      newDisplayedWord += guessedLetter;
-    } else {
-      newDisplayedWord += displayedWord[i];
-    }
+    if (selectedWord[i] == guessedLetter) slots[i] = guessedLetter;
   }
-
   displayedWord = newDisplayedWord;
-  document.getElementById("wordDisplay").textContent = displayedWord
-    .split("")
-    .join("");
+  document.getElementById("wordDisplay").textContent = slots.join(" ");
 
-  if (!displayedWord.includes("_")) {
+  if (!slots.includes("_")) {
     endGame(true);
   }
 }
 
-function correctGuess(guessedLetter) {}
 function endGame(won) {
   if (won === true) {
     setTimeout(() => alert("yay!! you won!"), 100);
-  } else (won === false){
+  } else if (won === false) {
     setTimeout(() => alert("aw you lose. try again!"), 100);
   }
 }
