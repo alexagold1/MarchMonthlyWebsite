@@ -21,3 +21,6 @@ h3 {
   padding-bottom: 60px;
   padding-top: 50px;
 }
+#shamrock {
+  transition: transform 0.1s;
+}

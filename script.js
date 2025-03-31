@@ -20,7 +20,7 @@ let displayedWord = "";
 let wrongGuesses = 0;
 let guessedLetters = [];
 let slots;
-const maxMistakes = 6;
+const maxMistakes = 1.2;
 
 function startGame(level) {
   selectedWord = getRandomWord(level);
@@ -109,19 +109,10 @@ function guessLetter() {
 
 function wrongGuess(guessedLetter) {
   // incrament the num of wrong guess
-  wrongGuesses++;
-
+  wrongGuesses += 0.2;
+  shrinkImage();
   // add the guessed letter to the HTML div
   document.getElementById("wrongLetters").textContent += `${guessedLetter}`;
-
-  document.getElementById("shamrock").src = `imgs/shamrock${
-    6 - wrongGuesses
-  }.jpg`;
-
-  // check to see if the num of wrongGuesses === the maxMistakes if it is, call endGame(false)
-  if (wrongGuesses === maxMistakes) {
-    endGame(false);
-  }
 }
 
 function correctGuess(guessedLetter) {
@@ -140,6 +131,8 @@ function correctGuess(guessedLetter) {
   displayedWord = newDisplayedWord;
   document.getElementById("wordDisplay").textContent = slots.join(" ");
 
+  document.getElementById("correctSound").play();
+
   if (!slots.includes("_")) {
     endGame(true);
   }
@@ -156,3 +149,27 @@ function endGame(won) {
 function restartGame() {
   location.reload();
 }
+
+function shrinkImage() {
+  const img = document.getElementById("shamrock");
+  const currentWidth = img.clientWidth;
+  const currentHeight = img.clientHeight;
+
+  // Calculate new dimensions
+  const newWidth = currentWidth * 0.85;
+  const newHeight = currentHeight * 0.85;
+
+  // Apply new dimensions
+  img.style.width = newWidth + "px";
+  img.style.height = newHeight + "px";
+}
+// check to see if the num of wrongGuesses === the maxMistakes if it is, call endGame(false)
+if (wrongGuesses >= maxMistakes) {
+  endGame(false);
+}
+
+window.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    guessLetter(); // Calls the guessLetter function when Enter is pressed
+  }
+});
