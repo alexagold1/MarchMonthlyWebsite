@@ -113,18 +113,14 @@ function wrongGuess(guessedLetter) {
   shrinkImage();
   // add the guessed letter to the HTML div
   document.getElementById("wrongLetters").textContent += `${guessedLetter}`;
+  document.getElementById("wrongSound").play(); // Play wrong sound
+  if (wrongGuesses >= maxMistakes) {
+    endGame(false);
+  }
 }
 
 function correctGuess(guessedLetter) {
   let newDisplayedWord = "";
-
-  // for (let i = 0; i < selectedWord.length; i++) {
-  //   if (selectedWord[i] === guessedLetter) {
-  //     newDisplayedWord += guessedLetter;
-  //   } else {
-  //     newDisplayedWord += displayedWord[i];
-  //   }
-  // }
   for (let i = 0; i < selectedWord.length; i++) {
     if (selectedWord[i] == guessedLetter) slots[i] = guessedLetter;
   }
@@ -164,9 +160,6 @@ function shrinkImage() {
   img.style.height = newHeight + "px";
 }
 // check to see if the num of wrongGuesses === the maxMistakes if it is, call endGame(false)
-if (wrongGuesses >= maxMistakes) {
-  endGame(false);
-}
 
 window.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {

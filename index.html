@@ -25,45 +25,61 @@
     </header>
     <main class="container text-center">
         <h1 class="mb-4"> Shamrock Hangman</h1>
-        <div id="difficultySelection">
-            <h3> Select Difficulty:</h3>
-            <button class="btn btn-success difficulty-btn" onclick="startGame('easy')">Easy</button>
-            <button class="btn btn-warning difficulty-btn" onclick="startGame('medium')">Medium</button>
-            <button class="btn btn-danger difficulty-btn" onclick="startGame('hard')">Hard</button>
-        </div>
 
-        <div id="difficultyBox" class="mt-3 p-3 fw-bold d-none">
-            PLACEHOLDER
-
-        </div>
-
-        <!--Game Area-->
-        <div id="gameArea" class="mt-4 d-none">
-            <!--word display-->
-            <h2 id="wordDisplay" class="mb-3"> _ _ _ _ _ _ </h2>
-
-            <!--input for guessing-->
-            <div>
-                <input type="text" id="letterInput" maxlength="1" class="form-control d-inline-block w-auto text-center"
-                    placeholder="Guess a Letter">
-                <button id="guessBtn" class="btn btn-warning" onclick="guessLetter()">Guess</button>
+        <!-- New Row inside the Main Container -->
+        <div class="row">
+            <div class="col-12">
+                <div id="difficultySelection">
+                    <h3> Select Difficulty:</h3>
+                    <button class="btn btn-success difficulty-btn" onclick="startGame('easy')">Easy</button>
+                    <button class="btn btn-warning difficulty-btn" onclick="startGame('medium')">Medium</button>
+                    <button class="btn btn-danger difficulty-btn" onclick="startGame('hard')">Hard</button>
+                </div>
             </div>
-            <p id="wrongLetters" class="fw-bold text-danger">Wrong Guesses:</p>
-
-            <img id="shamrock" src="imgs/shamrock1.png" alt="Shamrock Health" class="shamrock-img">
-
-            <div class="mt-4">
-                <button id="restartBtn" class="btn btn-danger" onclick="restartGame()">Restart Game</button>
-            </div>
-            <audio id="correctSound" src="https://www.youtube.com/watch?v=GVAF07-2Xic" preload="auto"></audio>
-
         </div>
 
+        <!-- New Row for Difficulty Box -->
+        <div class="row">
+            <div class="col-12">
+                <div id="difficultyBox" class="mt-3 p-3 fw-bold d-none">
+                    PLACEHOLDER
+                </div>
+            </div>
+        </div>
+
+        <!--Game Area Row-->
+        <div class="row">
+            <div class="col-12">
+                <div id="gameArea" class="mt-4 d-none">
+                    <!--word display-->
+                    <h2 id="wordDisplay" class="mb-3"> _ _ _ _ _ _ </h2>
+
+                    <!--input for guessing-->
+                    <div>
+                        <input type="text" id="letterInput" maxlength="1"
+                            class="form-control d-inline-block w-auto text-center" placeholder="Guess a Letter">
+                        <button id="guessBtn" class="btn btn-warning" onclick="guessLetter()">Guess</button>
+                    </div>
+                    <p id="wrongLetters" class="fw-bold text-danger">Wrong Guesses:</p>
+
+                    <img id="shamrock" src="imgs/shamrock1.png" alt="Shamrock Health" class="shamrock-img img-fluid">
+
+                    <div class="mt-4">
+                        <button id="restartBtn" class="btn btn-danger" onclick="restartGame()">Restart Game</button>
+                    </div>
+                    <audio id="correctSound" src="rightaudio.mp3"></audio>
+                    <audio id="wrongSound" src="wrongaudio.mp3"></audio>
+
+                </div>
+            </div>
+        </div>
 
     </main>
+
     <footer>
         <!-- place footer here -->
     </footer>
+
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
