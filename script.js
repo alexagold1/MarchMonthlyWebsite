@@ -13,44 +13,45 @@ const wordList = [
   "tradition",
 ];
 
-// setting game variables
-
+// Setting game variables
 let selectedWord = "";
 let displayedWord = "";
 let wrongGuesses = 0;
 let guessedLetters = [];
 let slots;
 const maxMistakes = 1.2;
+let winCount = 0;
+let lossCount = 0;
 
+// Function to start the game
 function startGame(level) {
+  console.log("Starting game with difficulty: " + level);
+
   selectedWord = getRandomWord(level);
   slots = new Array(selectedWord.length);
   for (let i = 0; i < slots.length; i++) {
     slots[i] = "_";
   }
-  // update difficulty display div
+
+  // Update difficulty display
   updateDifficultyDisplay(level);
 
-  //   create the placeholder for the selected word
+  // Create the placeholder for the selected word
   displayedWord = " _ ".repeat(selectedWord.length);
-  //display the updated word
   document.getElementById("wordDisplay").textContent = displayedWord
     .split("")
     .join("");
 
-  // hide difficulty selection and show game name area
-
-  // add d block to the #difficultyselection
+  // Hide difficulty selection and show the game area
   document.getElementById("difficultySelection").classList.add("d-none");
-  // remove d-none from difficulty box & #gamearea
   document.getElementById("gameArea").classList.remove("d-none");
   document.getElementById("difficultyBox").classList.remove("d-none");
-  // add d-block to #difficultyBox & #gameArea
 
   document.getElementById("gameArea").classList.add("d-block");
   document.getElementById("difficultyBox").classList.add("d-block");
 }
 
+// Function to get a random word based on difficulty
 function getRandomWord(level) {
   let filteredWords = wordList.filter((word) => {
     if (level === "easy") return word.length <= 4;
@@ -61,34 +62,33 @@ function getRandomWord(level) {
   return filteredWords[Math.floor(Math.random() * filteredWords.length)];
 }
 
+// Update difficulty display
 function updateDifficultyDisplay(level) {
   let difficultyBox = document.getElementById("difficultyBox");
 
-  // remove any previous difficulty classes
+  // Remove any previous difficulty classes
   difficultyBox.classList.remove("easy", "medium", "hard");
 
-  // set text & apply class dynamically using template literals
-
+  // Set text and apply class dynamically using template literals
   difficultyBox.textContent = `Difficulty: ${
     level.charAt(0).toUpperCase() + level.slice(1)
   }`;
-
   difficultyBox.classList.add(level);
 }
 
+// Guess letter function
 function guessLetter() {
-  let inputField = document.getElementById("letterInput"); //Get input field
-  let guessedLetter = inputField.value.toLowerCase(); //convert input to lowercase
+  let inputField = document.getElementById("letterInput"); // Get input field
+  let guessedLetter = inputField.value.toLowerCase(); // Convert input to lowercase
 
-  // check if input is a valid letter (a-z)
+  // Check if input is a valid letter (a-z)
   if (!guessedLetter.match(/^[a-z]$/)) {
     alert("Please enter a valid letter (a-z)!");
     inputField.value = "";
     return;
   }
 
-  //check if letter was already guessed
-
+  // Check if letter was already guessed
   if (guessedLetters.includes(guessedLetter)) {
     alert(`You already guessed '${guessedLetter}'. Try a different letter!`);
     inputField.value = "";
@@ -107,23 +107,25 @@ function guessLetter() {
   inputField.focus();
 }
 
+// Handle wrong guess
 function wrongGuess(guessedLetter) {
-  // incrament the num of wrong guess
   wrongGuesses += 0.2;
   shrinkImage();
-  // add the guessed letter to the HTML div
   document.getElementById("wrongLetters").textContent += `${guessedLetter}`;
   document.getElementById("wrongSound").play(); // Play wrong sound
+
   if (wrongGuesses >= maxMistakes) {
     endGame(false);
   }
 }
 
+// Handle correct guess
 function correctGuess(guessedLetter) {
   let newDisplayedWord = "";
   for (let i = 0; i < selectedWord.length; i++) {
     if (selectedWord[i] == guessedLetter) slots[i] = guessedLetter;
   }
+
   displayedWord = newDisplayedWord;
   document.getElementById("wordDisplay").textContent = slots.join(" ");
 
@@ -134,18 +136,44 @@ function correctGuess(guessedLetter) {
   }
 }
 
+// End the game
 function endGame(won) {
   if (won === true) {
-    setTimeout(() => alert("yay!! you won!"), 100);
+    winCount++; // Increment win count
+    setTimeout(() => {
+      showModal("You won! 🎉", "success");
+    }, 100);
   } else if (won === false) {
-    setTimeout(() => alert("aw you lose. try again!"), 100);
+    lossCount++; // Increment loss count
+    setTimeout(() => {
+      showModal("You lost! Try again 😞", "danger");
+    }, 100);
   }
+  updateScore(); // Update the score display after the game ends
 }
 
+// Show modal for win/loss
+function showModal(message, type) {
+  const modal = document.getElementById("winLossModal");
+  const modalMessage = document.getElementById("modalMessage");
+  modalMessage.textContent = message;
+  modal.classList.add(type);
+  modal.style.display = "flex"; // Display the modal
+}
+
+// Close modal
+function closeModal() {
+  const modal = document.getElementById("winLossModal");
+  modal.style.display = "none"; // Hide the modal
+  restartGame();
+}
+
+// Restart the game
 function restartGame() {
   location.reload();
 }
 
+// Shrink the shamrock image with each wrong guess
 function shrinkImage() {
   const img = document.getElementById("shamrock");
   const currentWidth = img.clientWidth;
@@ -159,10 +187,22 @@ function shrinkImage() {
   img.style.width = newWidth + "px";
   img.style.height = newHeight + "px";
 }
-// check to see if the num of wrongGuesses === the maxMistakes if it is, call endGame(false)
 
+// Update the score display
+function updateScore() {
+  document.getElementById("winCount").textContent = winCount;
+  document.getElementById("lossCount").textContent = lossCount;
+}
+
+// Listen for the Enter key to submit a guess
 window.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {
     guessLetter(); // Calls the guessLetter function when Enter is pressed
   }
 });
+
+// Modal functionality for win/loss display
+document.getElementById("winLossModal").addEventListener("click", closeModal);
+
+// Modal style (in CSS)
+document.getElementById("winLossModal").style.display = "none";

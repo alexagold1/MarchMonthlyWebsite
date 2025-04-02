@@ -34,6 +34,10 @@
                     <button class="btn btn-success difficulty-btn" onclick="startGame('easy')">Easy</button>
                     <button class="btn btn-warning difficulty-btn" onclick="startGame('medium')">Medium</button>
                     <button class="btn btn-danger difficulty-btn" onclick="startGame('hard')">Hard</button>
+                    <div id="scoreDisplay" class="mt-4">
+                        <p><strong>Wins:</strong> <span id="winCount">0</span></p>
+                        <p><strong>Losses:</strong> <span id="lossCount">0</span></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,7 +57,6 @@
                 <div id="gameArea" class="mt-4 d-none">
                     <!--word display-->
                     <h2 id="wordDisplay" class="mb-3"> _ _ _ _ _ _ </h2>
-
                     <!--input for guessing-->
                     <div>
                         <input type="text" id="letterInput" maxlength="1"
@@ -71,6 +74,15 @@
                     <audio id="wrongSound" src="wrongaudio.mp3"></audio>
 
                 </div>
+            </div>
+        </div>
+
+        <!-- Win/Loss Modal -->
+        <div id="winLossModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <h2 id="modalMessage"></h2>
+                <button onclick="restartGame()">Play Again</button>
             </div>
         </div>
 
