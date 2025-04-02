@@ -170,7 +170,23 @@ function closeModal() {
 
 // Restart the game
 function restartGame() {
-  location.reload();
+  document.getElementById("difficultySelection").classList.remove("d-none");
+  document.getElementById("gameArea").classList.add("d-none");
+  document.getElementById("difficultyBox").classList.add("d-none");
+
+  selectedWord = "";
+  displayedWord = "";
+  wrongGuesses = 0;
+  guessedLetters = [];
+  document.getElementById("wordDisplay").textContent = "";
+  document.getElementById("wrongLetters").textContent = "Wrong Guesses: ";
+  document.getElementById("letterInput").value = "";
+
+  const img = document.getElementById("shamrock");
+  img.style.width = "auto";
+  img.style.height = "auto";
+
+  updateScore();
 }
 
 // Shrink the shamrock image with each wrong guess
@@ -190,6 +206,8 @@ function shrinkImage() {
 
 // Update the score display
 function updateScore() {
+  localStorage.setItem("winCount", winCount);
+  localStorage.setItem("lossCount", lossCount);
   document.getElementById("winCount").textContent = winCount;
   document.getElementById("lossCount").textContent = lossCount;
 }
@@ -206,3 +224,9 @@ document.getElementById("winLossModal").addEventListener("click", closeModal);
 
 // Modal style (in CSS)
 document.getElementById("winLossModal").style.display = "none";
+
+window.onload = () => {
+  localStorage.setItem("winCount", 0);
+  localStorage.setItem("lossCount", 0);
+  updateScore();
+};
